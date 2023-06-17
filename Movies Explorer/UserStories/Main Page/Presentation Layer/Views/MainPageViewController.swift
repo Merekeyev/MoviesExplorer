@@ -28,6 +28,20 @@ class MainPageViewController: UIViewController {
     
     private func setupUI() {
         setupCollectionView()
+        setupNavigationBar()
+    }
+    
+    private func bindViewModel() {
+        viewModel.didStateChange = { [weak self] in
+            guard let self = self else { return }
+            self.refreshControl.endRefreshing()
+            self.collectionView.reloadData()
+        }
+    }
+    
+    @objc
+    private func getAllCategoriesMovies() {
+        viewModel.getAllCategoriesMovies()
     }
     
     private func setupCollectionView() {
@@ -51,17 +65,21 @@ class MainPageViewController: UIViewController {
         collectionView.refreshControl = refreshControl
     }
     
-    private func bindViewModel() {
-        viewModel.didStateChange = { [weak self] in
-            guard let self = self else { return }
-            self.refreshControl.endRefreshing()
-            self.collectionView.reloadData()
-        }
+    private func setupNavigationBar() {
+        let searchLoopButton = UIBarButtonItem(image: .init(named: "search_loop"),
+                                               style: .plain, target: self, action: #selector(search))
+        navigationController?.navigationBar.tintColor = .white
+        navigationItem.rightBarButtonItem = searchLoopButton
     }
     
     @objc
-    private func getAllCategoriesMovies() {
-        viewModel.getAllCategoriesMovies()
+    private func search() {
+        let network = Network()
+        let dataSource = SearchRemoteDataSource(network: network)
+        let repository = SearchRepository(remoteDataSource: dataSource)
+        let viewModel = SearchMoviesViewModel(repository: repository)
+        let viewController = SearchMoviesViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
@@ -128,7 +146,7 @@ extension MainPageViewController: UICollectionViewDelegate {
         case .upcoming(let movies):
             id = movies[indexPath.row].id
         }
-
+        
         let network = Network()
         let dataSource = MovieDetailRemoteDataSource(network: network)
         let repository = MovieDetailRepository(dataSource: dataSource)
