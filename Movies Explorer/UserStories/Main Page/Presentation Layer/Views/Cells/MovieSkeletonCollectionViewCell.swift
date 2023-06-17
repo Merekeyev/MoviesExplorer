@@ -8,7 +8,6 @@
 import UIKit
 
 class MovieSkeletonCollectionViewCell: UICollectionViewCell {
-    static let identifier = "MovieSkeletonCollectionViewCell"
     
     private let view: UIView = {
         let view = UIView()

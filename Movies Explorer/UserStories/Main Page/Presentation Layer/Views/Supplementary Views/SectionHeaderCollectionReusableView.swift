@@ -12,7 +12,6 @@ protocol SectionHeaderCollectionReusableViewDelegate: AnyObject {
 }
 
 class SectionHeaderCollectionReusableView: UICollectionReusableView {
-    static let identifier = "SectionHeaderCollectionReusableView"
     
     weak var delegate: SectionHeaderCollectionReusableViewDelegate?
     private var moviesCategory: MoviesCategory?

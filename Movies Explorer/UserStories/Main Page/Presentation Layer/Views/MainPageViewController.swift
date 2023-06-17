@@ -114,6 +114,28 @@ extension MainPageViewController: UICollectionViewDelegate {
             return UICollectionReusableView()
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard viewModel.state == .content else { return }
+        var id: Int
+        switch viewModel.sections[indexPath.section] {
+        case .nowPlaying(let movies):
+            id = movies[indexPath.row].id
+        case .popular(let movies):
+            id = movies[indexPath.row].id
+        case .topRated(let movies):
+            id = movies[indexPath.row].id
+        case .upcoming(let movies):
+            id = movies[indexPath.row].id
+        }
+
+        let network = Network()
+        let dataSource = MovieDetailRemoteDataSource(network: network)
+        let repository = MovieDetailRepository(dataSource: dataSource)
+        let viewModel = MovieDetailViewModel(id: id, repository: repository)
+        let viewController = MovieDetailViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension MainPageViewController {

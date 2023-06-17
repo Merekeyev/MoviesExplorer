@@ -8,7 +8,6 @@
 import UIKit
 
 class SectionSkeletonCollectionReusableView: UICollectionReusableView {
-    static let identifier = "SectionSkeletonCollectionReusableView"
     
     private let titleView: UIView = {
         let view = UIView()
