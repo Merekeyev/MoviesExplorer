@@ -12,7 +12,7 @@ class SearchMovieCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 8
+        imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true
         return imageView
     }()
